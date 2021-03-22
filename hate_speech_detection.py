@@ -77,13 +77,13 @@ print("xgb cross validation f1-score = ", cross_val_score(xgb,X_train,y_train,cv
 #print("mlp cross validation f1-score = ", cross_val_score(mlp,X_train,y_train,cv=5,scoring="f1_micro").mean())
 
 #initialize ensembles
-#estimators=[]
-estimators.append(('mlp', mlp))
-estimators.append(('rf', rf))
-#estimators.append(('xgb', xgb))
+estimators=[]
+#estimators.append(('mlp', mlp))
+#estimators.append(('rf', rf))
+estimators.append(('xgb', xgb))
 
 #voting ensemlbe
-ensemble = VotingClassifier(estimators, voting='soft',weights=[1,1,1])
+ensemble = VotingClassifier(estimators, voting='soft',weights=[1])
 ensemble.fit(X_train, y_train)
 pred = ensemble.predict(X_test)
 print ('fscore:{0:.3f}'.format(f1_score(y_test, pred, average='micro')))
@@ -116,7 +116,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 classifier3 = OneVsRestClassifier(xgb)
 #y_score = classifier.fit(x_base, y_train).decision_function(x_base_test)
 #y_score2= classifier2.fit(X_train, y_train).decision_function(X_test)
-y_score3= classifier3.fit(X_train, y_train).decision_function(X_test)
+y_score3= classifier3.fit(X_train, y_train).predict_proba(X_test)
 # Compute ROC curve and ROC area for each class
 #fpr = dict()
 #tpr = dict()
@@ -140,7 +140,7 @@ for i in range(n_classes):
 #roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
 #fpr2["micro"], tpr2["micro"], _ = roc_curve(y_test.ravel(), y_score2.ravel())
 #roc_auc2["micro"] = auc(fpr2["micro"], tpr2["micro"])
-fpr3["micro"], tpr3["micro"], _ = roc_curve(y_test.ravel(), y_score2.ravel())
+fpr3["micro"], tpr3["micro"], _ = roc_curve(y_test.ravel(), y_score3.ravel())
 roc_auc3["micro"] = auc(fpr3["micro"], tpr3["micro"])
 
 # Compute macro-average ROC curve and ROC area
@@ -196,6 +196,7 @@ plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
 plt.title('Micro-Average ROC ')
 plt.legend(loc='upper center', bbox_to_anchor=(0.5, -.15),fancybox=True)
+plt.save("ROC_curve.png")
 plt.show()
 
 ############## ROC values for just hate speech labels (class = 0)
@@ -214,4 +215,5 @@ plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
 plt.title('ROC for "Hatespeech" Label')
 plt.legend(loc='upper center', bbox_to_anchor=(0.5, -.15),fancybox=True)
+plt.save("ROC_hate_speech_only.png")
 plt.show()
