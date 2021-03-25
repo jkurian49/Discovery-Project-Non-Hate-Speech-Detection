@@ -9,17 +9,16 @@ import math
 import pandas as pd
 import csv
 
-data=pd.read_csv('labeled_data.csv',encoding = 'utf8')
+data=pd.read_csv('../new datasets/cleaned_tweets-combined.csv',encoding = 'utf8')
 tweet = data['tweet']
 
 # dictionary into a list
-dict=pd.read_csv('hatebase_dict.csv', encoding = 'ISO-8859-1')
-dict2 = dict['dic']
+dict=pd.read_csv('../dictionaries/hatebase_dict.csv', encoding = 'ISO-8859-1')
+dict2 = dict
 dic = []
-for row in dict2:
-    row = row.strip("',")
+for index,row in dict2.iterrows():
+    row = row['dic'].strip("',")
     dic.append(row)
-print(dic)
 
 
 # Regular expression
@@ -82,10 +81,7 @@ def term_frequency(text):
 def term_fre(text):
     term_freqs = {}
     for word in term_frequency(text).keys():
-        if word in dic:
-            term_freqs[word] = term_frequency(text)[word]
-        else:
-            continue
+        term_freqs[word] = term_frequency(text)[word]
     return term_freqs
 
 
@@ -93,7 +89,6 @@ def term_fre(text):
 docs = {}
 for no, rows in enumerate(tweet):
     docs[no] = term_fre(rows)
-#print (docs[2])
 
 
 # calculated document frequency
@@ -135,9 +130,9 @@ for i in range(len(list(tot_score))):
     temp.append(tot_score[i])
     output.append(temp)
 
-file=open("try.csv", 'w')
+file=open("../new feature datasets/tfidf_scores-combined.csv", 'w')
 with file:
     writer = csv.writer(file)
     writer.writerows(output)
 file.close()
-pd.read_csv('try.csv')
+#pd.read_csv('try.csv')

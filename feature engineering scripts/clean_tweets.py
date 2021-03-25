@@ -2,7 +2,7 @@ import pandas as pd
 import re
 import string
 
-data=pd.read_csv('labeled_data.csv',encoding = 'ISO-8859-1')
+data=pd.read_csv('../new datasets/labeled_data-combined.csv',encoding = 'ISO-8859-1')
 
 clean_tweets = []
 for index, row in data.iterrows():
@@ -13,4 +13,4 @@ for index, row in data.iterrows():
 
 data['clean_tweet'] = clean_tweets
 
-data.to_csv("cleaned_tweets.csv", index=False)
+data.to_csv("cleaned_tweets-combined.csv", index=False)

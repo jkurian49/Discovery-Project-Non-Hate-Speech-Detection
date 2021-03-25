@@ -10,34 +10,33 @@ import os
 import pandas as pd
 import numpy as np
 import nltk
-from sklearn import cross_validation
+from sklearn import model_selection
 
 # hate database
-dict1=pd.read_csv('hatebase_dict.csv', encoding = 'ISO-8859-1')
-dict11 = dict1['dic']
+dict1=pd.read_csv('../dictionaries/hatebase_dict.csv', encoding = 'ISO-8859-1')
+dict11 = dict1
 dic1 = []
-for row in dict11:
-    row = row.strip("',")
+for index, row in dict11.iterrows():
+    row = row['dic'].strip("',")
     dic1.append(row)
-    
-#print(dic)
+
 # negative words lexicon
-dict2=pd.read_csv('negative word.csv', encoding = 'ISO-8859-1')
-dict21 = dict2['dic']
+dict2=pd.read_csv('../dictionaries/negative-word.csv', encoding = 'ISO-8859-1')
+dict21 = dict2
 dic2 = []
-for row in dict21:
-    row = row.strip("',")
+for index, row in dict21.iterrows():
+    row = row['ï»¿dic'].strip("',")
     dic2.append(row)
     
 # postive word lexicon
-dict3=pd.read_csv('Postive words.csv', encoding = 'ISO-8859-1')
-dict31 = dict3['dic']
+dict3=pd.read_csv('../dictionaries/Postive-words.csv', encoding = 'ISO-8859-1')
+dict31 = dict3
 dic3 = []
-for row in dict31:
-    row = row.strip("',")
+for index, row in dict31.iterrows():
+    row = row['ï»¿dic'].strip("',")
     dic3.append(row)
 
-hatedata = pd.read_csv('cleaned_tweets.csv')
+hatedata = pd.read_csv('../new datasets/cleaned_tweets-combined.csv')
 
 tweet = hatedata['clean_tweet']
 tweet1=tweet.str.split(" ")
@@ -89,4 +88,4 @@ hatedata["neg"] = neg
 hatedata["negnor"] = negnor
 hatedata["pos"] = pos
 hatedata["posnor"] = posnor
-hatedata.to_csv('sentiment_scores.csv')
+hatedata.to_csv('../new feature datasets/sentiment_scores-combined.csv')

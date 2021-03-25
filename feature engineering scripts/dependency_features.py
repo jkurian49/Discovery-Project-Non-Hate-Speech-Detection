@@ -1,8 +1,8 @@
 import json
 import pandas as pd
 # Load the file
-dependency_dict = json.loads(open("dependency_dict.json").read())
-data=pd.read_csv('cleaned_tweets.csv',encoding = 'ISO-8859-1')
+dependency_dict = json.loads(open("dependency_dict-combined.json").read())
+data=pd.read_csv('../new datasets/cleaned_tweets-combined.csv',encoding = 'ISO-8859-1')
 
 #find all dependency types found in our dataset, stored in set to ensure no repeats (all unique types)
 dependency_types=set()
@@ -29,4 +29,4 @@ for index, row in data.iterrows():
 data = data.add_prefix('dependecy:')
 data.columns.values
 
-data.to_csv("dependency_features.csv")
+data.to_csv("../new feature datasets/dependency_features-combined.csv")
